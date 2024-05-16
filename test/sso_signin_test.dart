@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:single_sign_on/sso_signin.dart';
 
-import 'package:sso_signin/sso_signin.dart';
 
 void main() {
   test('adds one to input values', () {

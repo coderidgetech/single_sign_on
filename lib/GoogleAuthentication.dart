@@ -1,6 +1,7 @@
 // google_authentication.dart
 
-import 'package:sso_signin/Authenticator.dart';
+
+import 'Authenticator.dart';
 
 
 class GoogleAuthentication implements Authenticator {
