@@ -12,9 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  single_sign_on:
-    git:
-      url: https://github.com/coderidgetech/single_sign_on.git
 
 
 dev_dependencies:
