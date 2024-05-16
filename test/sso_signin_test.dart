@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:single_sign_on/sso_signin.dart';
+import 'package:single_sign_on/main.dart';
 
 
 void main() {

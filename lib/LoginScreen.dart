@@ -22,12 +22,15 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Username'),
+                decoration: InputDecoration(labelText: 'Username',border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue)
+                )),
               ),
               SizedBox(height: 16.0),
               TextFormField(
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: InputDecoration(labelText: 'Password',border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue))),
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
