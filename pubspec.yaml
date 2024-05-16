@@ -1,4 +1,4 @@
-name: sso_signin
+name: single_sign_on
 description: sso_signin is a package where user can add athentication using Google, Microsoft and LDAP.
 version: 0.0.2
 publish_to: 'https://github.com/coderidgetech/sso_signin.git'
@@ -12,9 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-#  single_sign_on:
-#    git:
-#      url: https://github.com/coderidgetech/single_sign_on.git
+  single_sign_on:
+    git:
+      url: https://github.com/coderidgetech/single_sign_on.git
 
 
 dev_dependencies:
