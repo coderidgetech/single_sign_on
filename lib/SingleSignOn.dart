@@ -7,15 +7,11 @@ import 'package:single_sign_on/AuthProvider.dart';
 import 'Config.dart';
 
 class SingleSignOn {
-  static Widget initialize({
-    required Widget child,
-    required Config config,
-  }) {
+  static Widget initialize() {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
-      child: child,
     );
   }
 }
