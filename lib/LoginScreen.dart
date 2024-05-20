@@ -1,6 +1,7 @@
   import 'package:flutter/material.dart';
   import 'package:provider/provider.dart';
   import 'package:single_sign_on/AuthProvider.dart';
+import 'package:single_sign_on/model/AuthUrlResponse.dart';
   import 'package:url_launcher/url_launcher.dart';
   import 'package:webview_flutter/webview_flutter.dart';
 
@@ -69,11 +70,11 @@
                         onPressed: () async {
                           // Google sign-in logic
                           // Pass necessary parameters to onLoginPressed
-                          String authUrl = await Provider.of<AuthProvider>(context,listen: false).fetchAuthUrl( baseUrl, tenant, loginType, deviceID, appName);
+                          AuthUrlResponse authUrl = await Provider.of<AuthProvider>(context,listen: false).fetchAuthUrl( baseUrl, tenant, loginType, deviceID, appName);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => WebViewScreen(authUrl: authUrl,onLoginPressed: onLoginPressed,),
+                              builder: (context) => WebViewScreen(authUrl: authUrl.data,onLoginPressed: onLoginPressed,),
                             ),
                           );
                           onLoginPressed('google_token');

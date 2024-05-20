@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:single_sign_on/model/AuthUrlResponse.dart';
 
-class AuthProvider with ChangeNotifier {
+class   AuthProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
@@ -27,7 +30,7 @@ class AuthProvider with ChangeNotifier {
       print('Login failed: ${response.statusCode}');
     }
   }
-  Future<String> fetchAuthUrl(String baseUrl, String tenant, String loginType, String deviceID, String appName) async {
+  Future<AuthUrlResponse> fetchAuthUrl(String baseUrl, String tenant, String loginType, String deviceID, String appName) async {
     // Construct query parameters
     Map<String, String> queryParams = {
       'tenant': tenant,
@@ -37,7 +40,7 @@ class AuthProvider with ChangeNotifier {
     };
 
     // Append query parameters to the URL
-    Uri uriWithQuery = Uri.parse('$baseUrl/login').replace(queryParameters: queryParams);
+    Uri uriWithQuery = Uri.parse('$baseUrl/auth/oidc/signin').replace(queryParameters: queryParams);
 
     try {
       _isLoading = true;
@@ -48,8 +51,8 @@ class AuthProvider with ChangeNotifier {
       );
       _isLoading = false;
       if (response.statusCode == 200) {
-        // Handle successful response
-        return response.body; // Return the auth URL
+        // Parse the response into a model class
+        return AuthUrlResponse.fromJson(jsonDecode(response.body));
       } else {
         _isLoading = false;
         // Handle request failure
@@ -60,5 +63,4 @@ class AuthProvider with ChangeNotifier {
       // Handle network errors or other exceptions
       throw Exception('Error fetching auth URL: $error');
     }
-  }
-}
+  }}
