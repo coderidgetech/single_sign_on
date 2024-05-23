@@ -13,7 +13,6 @@ class   AuthProvider with ChangeNotifier {
     notifyListeners();
 
     final url = Uri.parse('$baseUrl/login');
-
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
