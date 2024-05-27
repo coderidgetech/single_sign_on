@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_sign_on/model/AuthUrlResponse.dart';
 
-class   AuthProvider with ChangeNotifier {
+class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 

@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:single_sign_on/AuthProvider.dart';
 import 'package:single_sign_on/model/AuthUrlResponse.dart';
+import 'package:single_sign_on/model/LoginPayload.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-import 'Config.dart';
-
 
 class LoginScreen extends StatelessWidget {
   late final Function(String token) onLoginPressed;
@@ -25,12 +23,12 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen(
       {required this.onLoginPressed,
-        required this.onSignUpPressed,
-        required this.baseUrl,
-        required this.loginType,
-        required this.tenant,
-        required this.deviceID,
-        required this.appName});
+      required this.onSignUpPressed,
+      required this.baseUrl,
+      required this.loginType,
+      required this.tenant,
+      required this.deviceID,
+      required this.appName});
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +74,9 @@ class LoginScreen extends StatelessWidget {
                         // Google sign-in logic
                         // Pass necessary parameters to onLoginPressed
                         AuthUrlResponse authUrl = await Provider.of<
-                            AuthProvider>(context, listen: false)
+                                AuthProvider>(context, listen: false)
                             .fetchAuthUrl(
-                            baseUrl, tenant, loginType, deviceID, appName);
+                                baseUrl, tenant, loginType, deviceID, appName);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -196,4 +194,3 @@ class _WebViewScreenState extends State<WebViewScreen> {
     );
   }
 }
-
