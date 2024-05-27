@@ -37,11 +37,16 @@ class Routes {
                   authUrl: authUrl,
                 ));
 
-      case RoutesName.login:
+      /*case RoutesName.login:
+        print("object");
+        final args = settings.arguments as Map<String, dynamic>;
+        print("object");
+
         return MaterialPageRoute(
             builder: (BuildContext context) => LoginScreen(
                   onLoginPressed: (token) {
                     // Handle login token
+                    print("object");
                     print('========>> Login token: $token');
                   },
                   onSignUpPressed: () {
@@ -55,7 +60,7 @@ class Routes {
                   tenant: 'TT',
                   deviceID: '351110795908267f',
                   appName: 'device_care',
-                ));
+                ));*/
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
