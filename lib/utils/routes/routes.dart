@@ -5,23 +5,37 @@ import 'package:single_sign_on/view/Normal.dart';
 import 'package:single_sign_on/view/OtpScreen.dart';
 
 class Routes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutesName.normal:
         final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (BuildContext context) => Normal(mapJson: args,));
+        return MaterialPageRoute(
+            builder: (BuildContext context) => Normal(
+                  mapJson: args,
+                ));
 
       case RoutesName.otp:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
             builder: (BuildContext context) =>
                 OTPScreen(username: args['username']));
+
       case RoutesName.splash:
       // return MaterialPageRoute(builder: (BuildContext context) => const SplashView());
 
       case RoutesName.home:
       // return MaterialPageRoute(
       //     builder: (BuildContext context) => OTPScreen());
+
+      case RoutesName.web_view:
+        final args = settings.arguments as Map<String, dynamic>;
+        dynamic authUrl = args['authUrl'];
+        print("object");
+
+        return MaterialPageRoute(
+            builder: (context) => WebViewScreen(
+                  authUrl: authUrl,
+                ));
 
       case RoutesName.login:
         return MaterialPageRoute(
@@ -36,7 +50,7 @@ class Routes {
                   },
                   baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1',
                   // Set your base URL
-                  loginType: 'google',
+                  loginType: 'microsoft',
                   // or 'microsoft' or 'ldap'
                   tenant: 'TT',
                   deviceID: '351110795908267f',

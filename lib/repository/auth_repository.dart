@@ -24,4 +24,15 @@ class AuthRepository {
       throw e;
     }
   }
+
+
+  Future<dynamic> googleSignin(dynamic data) async {
+    try {
+      dynamic response =
+      _apiServices.getGetApiResponseWithQuery(AppUrl.googleSginEndPoint, data);
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

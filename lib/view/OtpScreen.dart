@@ -66,7 +66,6 @@ class _OTPScreenState extends State<OTPScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Trigger OTP submission
-                    Utils.flushBarErrorMessage("edsf", context);
                     // TODO : Hit api here with otp
                     Map otpData = {
                       "tenant": "TT",

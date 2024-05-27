@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:single_sign_on/AuthProvider.dart';
 import 'package:single_sign_on/model/AuthUrlResponse.dart';
 import 'package:single_sign_on/model/LoginPayload.dart';
+import 'package:single_sign_on/res/Constants.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -32,6 +33,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    saveInCache(baseUrl, tenant, deviceID, appName);
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
@@ -71,38 +73,25 @@ class LoginScreen extends StatelessWidget {
                     // Show for Google login type
                     child: ElevatedButton(
                       onPressed: () async {
-                        // Google sign-in logic
-                        // Pass necessary parameters to onLoginPressed
-                        AuthUrlResponse authUrl = await Provider.of<
-                                AuthProvider>(context, listen: false)
-                            .fetchAuthUrl(
-                                baseUrl, tenant, loginType, deviceID, appName);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => WebViewScreen(
-                              authUrl: authUrl.data,
-                              onLoginPressed: onLoginPressed,
-                            ),
-                          ),
-                        );
+                        handlingGoogleAuthAndMicrosoft(context, authViewModel);
                         onLoginPressed('google_token');
                       },
                       child: Text('Sign in with Google'),
                     ),
                   ),
+                  SizedBox(height: 16.0),
                   Visibility(
                     visible: loginType == 'microsoft',
-                    // Show for Microsoft login type
                     child: ElevatedButton(
                       onPressed: () {
-                        // Microsoft sign-in logic
-                        // Pass necessary parameters to onLoginPressed
+                        Utils.snackBar("Microdof", context);
+                        handlingGoogleAuthAndMicrosoft(context, authViewModel);
                         onLoginPressed('microsoft_token');
                       },
                       child: Text('Sign in with Microsoft'),
                     ),
                   ),
+                  SizedBox(height: 16.0),
                   Visibility(
                     visible: loginType == 'ldap', // Show for LDAP login type
                     child: ElevatedButton(
@@ -118,19 +107,10 @@ class LoginScreen extends StatelessWidget {
                     onPressed: () {
                       String username = usernameController.text;
                       String password = passwordController.text;
-                      print("object");
-                      if (username.isEmpty ||
-                          password.isEmpty ||
-                          password.length < 2) {
-                        Utils.flushBarErrorMessage(
-                            "Please enter valid username or password", context);
+                      if (username.isEmpty ||password.isEmpty ||password.length < 2) {
+                        Utils.flushBarErrorMessage("Please enter valid username or password", context);
                       } else {
-                        Map data = {
-                          "tenant": "TT",
-                          "username": "emmteam",
-                          "password": "Welcome@1"
-                        };
-                        authViewModel.loginApi(jsonEncode(data), context);
+                        hitLoginApi(context, authViewModel, tenant, username, password);
                       }
                     },
                     child: Text('Login'),
@@ -147,13 +127,40 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  void handlingGoogleAuthAndMicrosoft(
+      BuildContext context, AuthViewModel authViewModel) {
+    Map<String, String> queryParams = {
+      'tenant': tenant,
+      'mode': loginType,
+      'device': deviceID,
+      'app': appName,
+    };
+    authViewModel.googlesigin(queryParams, context);
+  }
+
+  void saveInCache(
+      String baseUrl, String tenant, String deviceID, String appName) async {
+    await SharedPrefs.saveString(Constants.baseUrl, baseUrl);
+    await SharedPrefs.saveString(Constants.tenant, tenant);
+    await SharedPrefs.saveString(Constants.deviceID, deviceID);
+    await SharedPrefs.saveString(Constants.appName, appName);
+  }
+
+  void hitLoginApi(BuildContext context, AuthViewModel authViewModel,
+      String tenant, String username, String password) {
+    Map data = {"tenant": tenant, "username": username, "password": password};
+    authViewModel.loginApi(jsonEncode(data), context);
+  }
 }
 
 class WebViewScreen extends StatefulWidget {
   final String authUrl;
-  final Function(String token) onLoginPressed;
 
-  WebViewScreen({required this.authUrl, required this.onLoginPressed});
+  // final Function(String token) onLoginPressed;
+
+  // WebViewScreen({required this.authUrl, required this.onLoginPressed});
+  WebViewScreen({required this.authUrl});
 
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
@@ -183,9 +190,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
             if (token != null) {
               // Close the WebView
               Navigator.pop(context);
-
               // Call the onLoginPressed function with the token
-              widget.onLoginPressed(token);
+              // widget.onLoginPressed(token);
             }
           }
           return NavigationDecision.navigate;

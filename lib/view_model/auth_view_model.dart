@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,6 @@ class AuthViewModel with ChangeNotifier {
     _myRepo.loginApi(data).then((value) {
       setLoading(false);
       Map<String, dynamic> mapData = jsonDecode(data);
-
       Navigator.pushNamed(context, RoutesName.otp,
           arguments: {'username': mapData['username']});
       print("====================>>>>>  " + value.toString());
@@ -40,6 +40,23 @@ class AuthViewModel with ChangeNotifier {
       setLoading(false);
       Navigator.pushNamed(context, RoutesName.normal,
           arguments: {'tokenJson': value.toString()});
+      print("====================>>>>>  " + value.toString());
+    }).onError((error, stackTrace) {
+      setLoading(false);
+      Utils.flushBarErrorMessage(error.toString(), context);
+      print("====================>>>>>errorrrr  " + error.toString());
+    });
+  }
+
+  Future<void> googlesigin(dynamic data, BuildContext context) async {
+    setLoading(true);
+    _myRepo.googleSignin(data).then((value) {
+      setLoading(false);
+      print("====================>>>>>  " + value.toString());
+      dynamic url = value['data'];
+      Navigator.pushNamed(context, RoutesName.web_view,
+          arguments: {'authUrl': url});
+      //     arguments: {'tokenJson': value.toString()});
       print("====================>>>>>  " + value.toString());
     }).onError((error, stackTrace) {
       setLoading(false);

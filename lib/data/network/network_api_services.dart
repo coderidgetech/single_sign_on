@@ -77,4 +77,27 @@ class NetworkApiService implements BaseApiServices {
             'Error occured while communicating with server');
     }
   }
+
+  @override
+  Future getGetApiResponseWithQuery(String url, data) async{
+    if (kDebugMode) {
+      print(url);
+    }
+    dynamic responseJson;
+    try {
+      final response =
+          await http.get(Uri.parse(url).replace(queryParameters: data)).timeout(const Duration(seconds: 20));
+      responseJson = returnResponse(response);
+      print("object");
+    } on SocketException {
+      throw NoInternetException('');
+    } on TimeoutException {
+      throw FetchDataException('Network Request time out');
+    }
+
+    if (kDebugMode) {
+      print(responseJson);
+    }
+    return responseJson;
+  }
 }

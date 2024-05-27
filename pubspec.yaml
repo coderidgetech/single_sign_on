@@ -16,6 +16,7 @@ dependencies:
   webview_flutter: ^3.0.0
   fluttertoast: ^8.2.5
   another_flushbar: ^1.12.30
+  shared_preferences: ^2.0.15
 
 
 
