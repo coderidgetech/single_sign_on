@@ -6,7 +6,7 @@ import 'package:single_sign_on/utils/routes/routes_name.dart';
 import 'package:single_sign_on/view/LoginScreen.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
 
-void main() {
+/*void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // getIt.registerLazySingleton<AuthRepository>(() => AuthHttpApiRepository());
   // getIt.registerLazySingleton<HomeRepository>(() => HomeHttpApiRepository());
@@ -51,4 +51,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
+}*/
