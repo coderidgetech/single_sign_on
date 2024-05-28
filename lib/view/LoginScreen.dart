@@ -12,7 +12,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginScreen extends StatelessWidget {
   late final Function(String token) onLoginPressed;
-  late final VoidCallback onSignUpPressed;
   late final String baseUrl;
   late final String loginType;
   late final String tenant;
@@ -24,7 +23,6 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen(
       {required this.onLoginPressed,
-      required this.onSignUpPressed,
       required this.baseUrl,
       required this.loginType,
       required this.tenant,
@@ -110,14 +108,10 @@ class LoginScreen extends StatelessWidget {
                       if (username.isEmpty ||password.isEmpty ||password.length < 2) {
                         Utils.flushBarErrorMessage("Please enter valid username or password", context);
                       } else {
-                        hitLoginApi(context, authViewModel, tenant, username, password);
+                        hitLoginApi(context, authViewModel, tenant, username, password,onLoginPressed);
                       }
                     },
                     child: Text('Login'),
-                  ),
-                  TextButton(
-                    onPressed: onSignUpPressed,
-                    child: Text('Sign up'),
                   ),
                 ],
               ),
@@ -147,11 +141,12 @@ class LoginScreen extends StatelessWidget {
     await SharedPrefs.saveString(Constants.appName, appName);
   }
 
-  void hitLoginApi(BuildContext context, AuthViewModel authViewModel,
-      String tenant, String username, String password) {
-    Map data = {"tenant": tenant, "username": username, "password": password};
-    authViewModel.loginApi(jsonEncode(data), context);
-  }
+}
+void hitLoginApi(BuildContext context, AuthViewModel authViewModel,
+    String tenant, String username, String password, Function(String token) onLoginPressed) {
+  Map data = {"tenant": tenant, "username": "emmteam", "password": "Welcome@1"};
+
+  authViewModel.loginApi(jsonEncode(data), context,onLoginPressed);
 }
 
 class WebViewScreen extends StatefulWidget {

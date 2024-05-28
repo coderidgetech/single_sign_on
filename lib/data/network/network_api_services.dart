@@ -43,7 +43,7 @@ class NetworkApiService implements BaseApiServices {
     try {
       Response response = await post(Uri.parse(url), body: data)
           .timeout(const Duration(seconds: 10));
-      print("object");
+    print("object");
       responseJson = returnResponse(response);
       print("object");
     } on SocketException {

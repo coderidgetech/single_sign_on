@@ -132,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                           "username": "emmteam",
                           "password": "Welcome@1"
                         };
-                        authViewModel.loginApi(jsonEncode(data), context);
+                        authViewModel.loginApi(jsonEncode(data), context,onLoginPressed);
                       }
                     },
                     child: Text('Login'),

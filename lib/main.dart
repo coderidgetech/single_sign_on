@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:single_sign_on/AuthProvider.dart';
+import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/utils/routes/routes.dart';
 import 'package:single_sign_on/utils/routes/routes_name.dart';
 import 'package:single_sign_on/view/LoginScreen.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
 
-/*void main() {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // getIt.registerLazySingleton<AuthRepository>(() => AuthHttpApiRepository());
   // getIt.registerLazySingleton<HomeRepository>(() => HomeHttpApiRepository());
-  runApp(const MyApp());
+  // runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+/*class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -28,17 +29,16 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // this is the initial route indicating from where our app will start
-        // initialRoute: RoutesName.login,
-        // onGenerateRoute: Routes.generateRoute,
+
+        onGenerateRoute: Routes.generateRoute,
         home: LoginScreen(
           onLoginPressed: (token) {
             // Handle login token
             print("object");
-            print('========>> Login token: $token');
-          },
-          onSignUpPressed: () {
-            // Handle sign up
-            print('Sign up pressed');
+            print('======sdd=d=d=======>> Login token: $token');
+            Utils.toastMessage("TOKEN : " + token);
+            Navigator.pushNamed(context, RoutesName.normal);
+            // Navigator.pop(context);
           },
           baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1',
           // Set your base URL

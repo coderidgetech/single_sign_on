@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:single_sign_on/model/LoginPayload.dart';
 import 'package:single_sign_on/repository/auth_repository.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/utils/routes/routes_name.dart';
+
+import '../view/OtpScreen.dart';
 
 class AuthViewModel with ChangeNotifier {
   final _myRepo = AuthRepository();
@@ -19,13 +22,19 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loginApi(dynamic data, BuildContext context) async {
+  Future<void> loginApi(dynamic data, BuildContext context,
+      Function(String token) onLoginPressed) async {
     setLoading(true);
     _myRepo.loginApi(data).then((value) {
       setLoading(false);
       Map<String, dynamic> mapData = jsonDecode(data);
-      Navigator.pushNamed(context, RoutesName.otp,
-          arguments: {'username': mapData['username']});
+      var usernamr = mapData['username'];
+      Navigator.pushNamed(
+        context,
+        RoutesName.otp,
+        arguments: {'username': usernamr, 'call_back': onLoginPressed},
+      );
+
       print("====================>>>>>  " + value.toString());
     }).onError((error, stackTrace) {
       setLoading(false);
@@ -34,18 +43,36 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
-  Future<void> validateOtp(dynamic data, BuildContext context) async {
-    setLoading(true);
-    _myRepo.otpValidation(data).then((value) {
+  Future<String?> validateOtp(dynamic data, BuildContext context) async {
+    try{
+      setLoading(true);
+      var value = await _myRepo.otpValidation(data);
+      var token = value['data']['token'];
+      print("====================>>>>>  ");
+      return token;
+    }catch(e){
       setLoading(false);
-      Navigator.pushNamed(context, RoutesName.normal,
-          arguments: {'tokenJson': value.toString()});
+      Utils.flushBarErrorMessage(e.toString(), context);
+      return "";
+    }
+
+
+    /*_myRepo.otpValidation(data).then((value) {
+      setLoading(false);
+      var token = value['data']['token'];
+      print("====================>>>>>  ");
+
+      *//*Navigator.pushNamed(context, RoutesName.normal,
+          arguments: {'tokenJson': value.toString()});*//*
+      Utils.toastMessage("Token : " + token);
       print("====================>>>>>  " + value.toString());
+      return token;
     }).onError((error, stackTrace) {
       setLoading(false);
       Utils.flushBarErrorMessage(error.toString(), context);
       print("====================>>>>>errorrrr  " + error.toString());
-    });
+      return null;
+    });*/
   }
 
   Future<void> googlesigin(dynamic data, BuildContext context) async {

@@ -7,9 +7,10 @@ import 'package:single_sign_on/utils/apputil.dart';
 import '../view_model/auth_view_model.dart';
 
 class OTPScreen extends StatefulWidget {
+  final Function(String token) onLoginPressed;
   final String username;
 
-  OTPScreen({required this.username});
+  OTPScreen({required this.username, required this.onLoginPressed});
 
   @override
   _OTPScreenState createState() => _OTPScreenState();
@@ -63,7 +64,7 @@ class _OTPScreenState extends State<OTPScreen> {
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     // Trigger OTP submission
                     // TODO : Hit api here with otp
@@ -75,7 +76,25 @@ class _OTPScreenState extends State<OTPScreen> {
                       "app": "portal"
                     };
 
-                    authViewModel.validateOtp(jsonEncode(otpData), context);
+                    // Future<String?> t = authViewModel.validateOtp(jsonEncode(otpData), context);
+                    // String? t =await authViewModel.validateOtp(jsonEncode(otpData), context);
+                    print("object");
+                    /*if (token != null) {
+                      widget.onLoginPressed(token);
+                      print("Token received: $token");
+                    } else {
+                      print("Token is null");
+                    }*/
+
+                    authViewModel.validateOtp(jsonEncode(otpData), context).then((token) {
+                      print("object");
+                      if (token != null) {
+                        widget.onLoginPressed(token);
+                        print("Token received: $token");
+                      } else {
+                        print("Token is null");
+                      }
+                    });
                   }
                 },
                 child: Text('Submit OTP'),

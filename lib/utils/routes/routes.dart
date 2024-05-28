@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:single_sign_on/view/LoginScreen.dart';
 import 'package:single_sign_on/utils/routes/routes_name.dart';
@@ -8,59 +10,27 @@ class Routes {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutesName.normal:
-        final args = settings.arguments as Map<String, dynamic>;
+        // final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-            builder: (BuildContext context) => Normal(
-                  mapJson: args,
-                ));
+            builder: (BuildContext context) => NormalScreen());
 
       case RoutesName.otp:
         final args = settings.arguments as Map<String, dynamic>;
+        var username = args['username'];
+        var call_back = args['call_back'];
         return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                OTPScreen(username: args['username']));
-
-      case RoutesName.splash:
-      // return MaterialPageRoute(builder: (BuildContext context) => const SplashView());
-
-      case RoutesName.home:
-      // return MaterialPageRoute(
-      //     builder: (BuildContext context) => OTPScreen());
-
+          builder: (BuildContext context) =>
+              OTPScreen(username: username, onLoginPressed: call_back),
+        );
       case RoutesName.web_view:
         final args = settings.arguments as Map<String, dynamic>;
         dynamic authUrl = args['authUrl'];
         print("object");
-
         return MaterialPageRoute(
             builder: (context) => WebViewScreen(
                   authUrl: authUrl,
                 ));
 
-      /*case RoutesName.login:
-        print("object");
-        final args = settings.arguments as Map<String, dynamic>;
-        print("object");
-
-        return MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen(
-                  onLoginPressed: (token) {
-                    // Handle login token
-                    print("object");
-                    print('========>> Login token: $token');
-                  },
-                  onSignUpPressed: () {
-                    // Handle sign up
-                    print('Sign up pressed');
-                  },
-                  baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1',
-                  // Set your base URL
-                  loginType: 'microsoft',
-                  // or 'microsoft' or 'ldap'
-                  tenant: 'TT',
-                  deviceID: '351110795908267f',
-                  appName: 'device_care',
-                ));*/
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
