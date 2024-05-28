@@ -2,9 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:single_sign_on/AuthProvider.dart';
-import 'package:single_sign_on/model/AuthUrlResponse.dart';
-import 'package:single_sign_on/model/LoginPayload.dart';
 import 'package:single_sign_on/res/Constants.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';

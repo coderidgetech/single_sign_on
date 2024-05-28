@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:single_sign_on/AuthProvider.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/utils/routes/routes.dart';
 import 'package:single_sign_on/utils/routes/routes_name.dart';
@@ -14,7 +13,8 @@ void main() {
   // runApp(const MyApp());
 }
 
-/*class MyApp extends StatelessWidget {
+/*
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -51,4 +51,5 @@ void main() {
       ),
     );
   }
-}*/
+}
+*/
