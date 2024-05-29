@@ -24,12 +24,12 @@ class Routes {
         );
       case RoutesName.web_view:
         final args = settings.arguments as Map<String, dynamic>;
+        var call_back = args['call_back'];
         dynamic authUrl = args['authUrl'];
         print("object");
         return MaterialPageRoute(
-            builder: (context) => WebViewScreen(
-                  authUrl: authUrl,
-                ));
+            builder: (context) =>
+                WebViewScreen(authUrl: authUrl, onLoginPressed: call_back));
 
       default:
         return MaterialPageRoute(builder: (_) {

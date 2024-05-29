@@ -44,26 +44,25 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<String?> validateOtp(dynamic data, BuildContext context) async {
-    try{
+    try {
       setLoading(true);
       var value = await _myRepo.otpValidation(data);
       var token = value['data']['token'];
       print("====================>>>>>  ");
       return token;
-    }catch(e){
+    } catch (e) {
       setLoading(false);
       Utils.flushBarErrorMessage(e.toString(), context);
       return "";
     }
-
 
     /*_myRepo.otpValidation(data).then((value) {
       setLoading(false);
       var token = value['data']['token'];
       print("====================>>>>>  ");
 
-      *//*Navigator.pushNamed(context, RoutesName.normal,
-          arguments: {'tokenJson': value.toString()});*//*
+      */ /*Navigator.pushNamed(context, RoutesName.normal,
+          arguments: {'tokenJson': value.toString()});*/ /*
       Utils.toastMessage("Token : " + token);
       print("====================>>>>>  " + value.toString());
       return token;
@@ -75,9 +74,14 @@ class AuthViewModel with ChangeNotifier {
     });*/
   }
 
-  Future<void> googlesigin(dynamic data, BuildContext context) async {
+  Future<String?> googlesigin(dynamic data, BuildContext context) async {
     setLoading(true);
-    _myRepo.googleSignin(data).then((value) {
+    var value = await _myRepo.googleSignin(data);
+    dynamic url = value['data'];
+    print("object");
+    return url;
+
+    /*_myRepo.googleSignin(data).then((value) {
       setLoading(false);
       print("====================>>>>>  " + value.toString());
       dynamic url = value['data'];
@@ -89,6 +93,7 @@ class AuthViewModel with ChangeNotifier {
       setLoading(false);
       Utils.flushBarErrorMessage(error.toString(), context);
       print("====================>>>>>errorrrr  " + error.toString());
-    });
+    });*/
+    print("object");
   }
 }
