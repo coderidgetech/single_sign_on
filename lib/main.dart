@@ -6,9 +6,6 @@ import 'package:single_sign_on/view/LoginScreen.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
 
 void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // getIt.registerLazySingleton<AuthRepository>(() => AuthHttpApiRepository());
-  // getIt.registerLazySingleton<HomeRepository>(() => HomeHttpApiRepository());
   // runApp(const MyApp());
 }
 
@@ -29,7 +26,7 @@ class MyApp extends StatelessWidget {
         // this is the initial route indicating from where our app will start
 
         onGenerateRoute: Routes.generateRoute,
-        debugShowCheckedModeBanner: false, // This line removes the debug banner
+        debugShowCheckedModeBanner: false,
         home: LoginScreen(
           onLoginPressed: (token) {
             // Handle login token
