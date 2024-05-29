@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:single_sign_on/model/LoginPayload.dart';
 import 'package:single_sign_on/repository/auth_repository.dart';
 import 'package:single_sign_on/utils/apputil.dart';
@@ -43,35 +45,41 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
+  Future<void> ldapLogin(dynamic data, BuildContext context,
+      Function(String token) onLoginPressed) async {
+    setLoading(true);
+    _myRepo.ldapApi(data).then((value) {
+      setLoading(false);
+      Map<String, dynamic> mapData = jsonDecode(data);
+      print("object");
+      var token = value['data']['token'];
+      onLoginPressed(token);
+      print("====================>>>>>  " + value.toString());
+    }).onError((error, stackTrace) {
+      setLoading(false);
+      Utils.flushBarErrorMessage(error.toString(), context);
+      print("====================>>>>>errorrrr  " + error.toString());
+    });
+  }
+
   Future<String?> validateOtp(dynamic data, BuildContext context) async {
     try {
       setLoading(true);
       var value = await _myRepo.otpValidation(data);
       var token = value['data']['token'];
       print("====================>>>>>  ");
-      return token;
+      if (token != null) {
+        setLoading(false);
+        return token;
+      } else {
+        setLoading(false);
+        Utils.flushBarErrorMessage("Error in getting otp.", context);
+      }
     } catch (e) {
       setLoading(false);
       Utils.flushBarErrorMessage(e.toString(), context);
       return "";
     }
-
-    /*_myRepo.otpValidation(data).then((value) {
-      setLoading(false);
-      var token = value['data']['token'];
-      print("====================>>>>>  ");
-
-      */ /*Navigator.pushNamed(context, RoutesName.normal,
-          arguments: {'tokenJson': value.toString()});*/ /*
-      Utils.toastMessage("Token : " + token);
-      print("====================>>>>>  " + value.toString());
-      return token;
-    }).onError((error, stackTrace) {
-      setLoading(false);
-      Utils.flushBarErrorMessage(error.toString(), context);
-      print("====================>>>>>errorrrr  " + error.toString());
-      return null;
-    });*/
   }
 
   Future<String?> googlesigin(dynamic data, BuildContext context) async {
@@ -79,21 +87,29 @@ class AuthViewModel with ChangeNotifier {
     var value = await _myRepo.googleSignin(data);
     dynamic url = value['data'];
     print("object");
-    return url;
+    if (url != null) {
+      setLoading(false);
+      return url;
+    } else {
+      setLoading(false);
+      Utils.flushBarErrorMessage(
+          "Error in geting google sign in url ", context);
+    }
+  }
 
-    /*_myRepo.googleSignin(data).then((value) {
+  Future<String> validateCode(
+      dynamic data, Function(String token) onLoginPressed) async {
+    setLoading(true);
+    var value = await _myRepo.validateCode(data);
+    String token = value['data']['token'];
+    if (token != null) {
       setLoading(false);
-      print("====================>>>>>  " + value.toString());
-      dynamic url = value['data'];
-      Navigator.pushNamed(context, RoutesName.web_view,
-          arguments: {'authUrl': url});
-      //     arguments: {'tokenJson': value.toString()});
-      print("====================>>>>>  " + value.toString());
-    }).onError((error, stackTrace) {
+      return token;
+    } else {
       setLoading(false);
-      Utils.flushBarErrorMessage(error.toString(), context);
-      print("====================>>>>>errorrrr  " + error.toString());
-    });*/
+      Utils.toastMessage("Error in geting token");
+      return "";
+    }
     print("object");
   }
 }

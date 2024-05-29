@@ -10,10 +10,9 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // getIt.registerLazySingleton<AuthRepository>(() => AuthHttpApiRepository());
   // getIt.registerLazySingleton<HomeRepository>(() => HomeHttpApiRepository());
-  // runApp(const MyApp());
+  runApp(const MyApp());
 }
 
-/*
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -37,19 +36,19 @@ class MyApp extends StatelessWidget {
             print("object");
             print('======sdd=d=d=======>> Login token: $token');
             Utils.toastMessage("TOKEN : " + token);
-            Navigator.pushNamed(context, RoutesName.normal);
+            // Navigator.pushNamed(context, RoutesName.normal);
             // Navigator.pop(context);
           },
           baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1',
           // Set your base URL
-          loginType: 'google',
+          // loginType: 'microsoft',
+          loginType: 'ldap',
           // or 'microsoft' or 'ldap'
           tenant: 'TT',
           deviceID: '351110795908267f',
-          appName: 'device_care',
+          appName: 'device',
         ),
       ),
     );
   }
 }
-*/

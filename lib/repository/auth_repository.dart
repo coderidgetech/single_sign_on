@@ -15,6 +15,16 @@ class AuthRepository {
     }
   }
 
+  Future<dynamic> ldapApi(dynamic data) async {
+    try {
+      dynamic response =
+      _apiServices.getPostApiResponse(AppUrl.ldapEndPoint, data);
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<dynamic> otpValidation(dynamic data) async {
     try {
       dynamic response =
@@ -35,4 +45,16 @@ class AuthRepository {
       throw e;
     }
   }
+
+  Future<dynamic> validateCode(dynamic data) async {
+    try {
+      dynamic response =
+      _apiServices.getPostApiResponse(AppUrl.codeToTokenEndPoint, data);
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
 }

@@ -75,21 +75,11 @@ class _OTPScreenState extends State<OTPScreen> {
                       "device": "",
                       "app": "portal"
                     };
-
-                    // Future<String?> t = authViewModel.validateOtp(jsonEncode(otpData), context);
-                    // String? t =await authViewModel.validateOtp(jsonEncode(otpData), context);
-                    print("object");
-                    /*if (token != null) {
-                      widget.onLoginPressed(token);
-                      print("Token received: $token");
-                    } else {
-                      print("Token is null");
-                    }*/
-
                     authViewModel.validateOtp(jsonEncode(otpData), context).then((token) {
                       print("object");
                       if (token != null) {
                         widget.onLoginPressed(token);
+
                         print("Token received: $token");
                       } else {
                         print("Token is null");
@@ -99,6 +89,11 @@ class _OTPScreenState extends State<OTPScreen> {
                 },
                 child: Text('Submit OTP'),
               ),
+              if (authViewModel.loading)
+                Center(
+                  child: CircularProgressIndicator(),
+                )
+
             ],
           ),
         ),

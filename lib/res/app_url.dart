@@ -3,4 +3,6 @@ class AppUrl {
   static var loginEndPoint = baseUrl + '/auth/local/login';
   static var otpEndPoint = baseUrl + '/auth/local/tfa';
   static var googleSginEndPoint = baseUrl + '/auth/oidc/signin';
+  static var codeToTokenEndPoint = baseUrl + '/auth/oidc/callback';
+  static var ldapEndPoint = baseUrl + '/auth/ldap/login';
 }

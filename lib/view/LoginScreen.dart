@@ -82,7 +82,6 @@ class LoginScreen extends StatelessWidget {
                     visible: loginType == 'microsoft',
                     child: ElevatedButton(
                       onPressed: () {
-                        Utils.snackBar("Microdof", context);
                         handlingGoogleAuthAndMicrosoft(
                             context, authViewModel, onLoginPressed);
                         // onLoginPressed('microsoft_token');
@@ -97,7 +96,9 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         // LDAP sign-in logic
                         // Pass necessary parameters to onLoginPressed
-                        onLoginPressed('ldap_token');
+                        // onLoginPressed('ldap_token');
+
+                        Navigator.pushNamed(context, RoutesName.ldap,arguments: {'tenant':tenant,'deviceId':deviceID,'appName':appName,'call_back':onLoginPressed});
                       },
                       child: Text('Sign in with LDAP'),
                     ),
@@ -118,6 +119,10 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: Text('Login'),
                   ),
+                  if (authViewModel.loading)
+                    Center(
+                      child: CircularProgressIndicator(),
+                    )
                 ],
               ),
             ),
@@ -136,11 +141,11 @@ class LoginScreen extends StatelessWidget {
       'app': appName,
     };
     authViewModel.googlesigin(queryParams, context).then((authUrl) {
-      print("object");
-      print("object");
-
-      Navigator.pushNamed(context, RoutesName.web_view,
-          arguments: {'authUrl': authUrl, 'call_back': onLoginPressed});
+      Navigator.pushNamed(context, RoutesName.web_view, arguments: {
+        'authUrl': authUrl,
+        'call_back': onLoginPressed,
+        'authViewModel': authViewModel
+      });
     });
   }
 
@@ -160,8 +165,7 @@ void hitLoginApi(
     String username,
     String password,
     Function(String token) onLoginPressed) {
-  Map data = {"tenant": tenant, "username": "emmteam", "password": "Welcome@1"};
-
+  Map data = {"tenant": tenant, "username": username, "password": password};
   authViewModel.loginApi(jsonEncode(data), context, onLoginPressed);
 }
 
@@ -171,7 +175,10 @@ class WebViewScreen extends StatefulWidget {
   final Function(String token) onLoginPressed;
 
   // WebViewScreen({required this.authUrl, required this.onLoginPressed});
-  WebViewScreen({required this.authUrl, required this.onLoginPressed});
+  WebViewScreen({
+    required this.authUrl,
+    required this.onLoginPressed,
+  });
 
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
@@ -182,6 +189,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Authentication'),
@@ -197,13 +206,24 @@ class _WebViewScreenState extends State<WebViewScreen> {
           // Handle URL navigation
           if (request.url.startsWith('https://portal.emmdev.tectoro')) {
             final Uri uri = Uri.parse(request.url);
-            final String? token = uri.queryParameters['code'];
-            if (token != null) {
-              // Close the WebView
-              widget.onLoginPressed(token);
-              Navigator.pop(context);
-              // Call the onLoginPressed function with the token
-              // widget.onLoginPressed(token);
+            final String? code = uri.queryParameters['code'];
+            final String? state = uri.queryParameters['state'];
+
+            if (code != null && state != null) {
+              // TODO : Hit the api with code and get the token
+              Map<String, String> data = {
+                'code': code,
+                'state': state,
+              };
+              print("object");
+              String token = await authViewModel.validateCode(
+                  jsonEncode(data), widget.onLoginPressed);
+              if (token != null) {
+                widget.onLoginPressed(token);
+                Navigator.pop(context);
+              } else {
+                Utils.toastMessage("Error in geting token");
+              }
             }
           }
           return NavigationDecision.navigate;
