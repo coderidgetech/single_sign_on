@@ -10,8 +10,8 @@ import 'package:single_sign_on/view_model/auth_view_model.dart';
 void main() {
   // runApp(const MyApp());
 }
-/*
 
+/*
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Builder(
           builder: (context) {
+            final List<String> loginTypes = ['ldap', 'google', 'microsoft'];
             return LoginScreen(
               onLoginPressed: (token) {
                 // Handle login token
@@ -40,11 +41,12 @@ class MyApp extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => NormalScreen()),
                 );
               },
-              baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1', // Set your base URL
-              loginType: 'ldap', // or 'microsoft' or 'ldap'
+              baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1',
+              // Set your base URL
               tenant: 'TT',
               deviceID: '351110795908267f',
               appName: 'device',
+              loginTypes: loginTypes,
             );
           },
         ),

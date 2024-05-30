@@ -12,10 +12,10 @@ import '../utils/routes/routes_name.dart';
 class LoginScreen extends StatelessWidget {
   late final Function(String token) onLoginPressed;
   late final String baseUrl;
-  late final String loginType;
   late final String tenant;
   late final String deviceID;
   late final String appName;
+  late final List<String> loginTypes;
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -23,10 +23,10 @@ class LoginScreen extends StatelessWidget {
   LoginScreen(
       {required this.onLoginPressed,
       required this.baseUrl,
-      required this.loginType,
       required this.tenant,
       required this.deviceID,
-      required this.appName});
+      required this.appName,
+      required this.loginTypes});
 
   @override
   Widget build(BuildContext context) {
@@ -64,45 +64,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
-                  Visibility(
-                    visible: loginType == 'google',
-                    // Show for Google login type
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        handlingGoogleAuthAndMicrosoft(
-                            context, authViewModel, onLoginPressed);
-                        // onLoginPressed('google_token');
-                      },
-                      child: Text('Sign in with Google'),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Visibility(
-                    visible: loginType == 'microsoft',
-                    child: ElevatedButton(
-                      onPressed: () {
-                        handlingGoogleAuthAndMicrosoft(
-                            context, authViewModel, onLoginPressed);
-                        // onLoginPressed('microsoft_token');
-                      },
-                      child: Text('Sign in with Microsoft'),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Visibility(
-                    visible: loginType == 'ldap', // Show for LDAP login type
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // LDAP sign-in logic
-                        // Pass necessary parameters to onLoginPressed
-                        // onLoginPressed('ldap_token');
-
-                        Navigator.pushNamed(context, RoutesName.ldap,arguments: {'tenant':tenant,'deviceId':deviceID,'appName':appName,'call_back':onLoginPressed});
-                      },
-                      child: Text('Sign in with LDAP'),
-                    ),
-                  ),
                   ElevatedButton(
                     onPressed: () {
                       String username = usernameController.text;
@@ -119,6 +80,47 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: Text('Login'),
                   ),
+                  SizedBox(height: 16.0),
+                  Visibility(
+                    visible: loginTypes.contains('google'),
+                    // Show for Google login type
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        handlingGoogleAuthAndMicrosoft(
+                            context, authViewModel, onLoginPressed, 'google');
+                      },
+                      child: Text('Sign in with Google'),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Visibility(
+                    visible: loginTypes.contains('microsoft'),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        handlingGoogleAuthAndMicrosoft(context, authViewModel,
+                            onLoginPressed, 'microsoft');
+                      },
+                      child: Text('Sign in with Microsoft'),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Visibility(
+                    visible: loginTypes.contains('ldap'),
+                    // Show for LDAP login type
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.ldap,
+                            arguments: {
+                              'tenant': tenant,
+                              'deviceId': deviceID,
+                              'appName': appName,
+                              'call_back': onLoginPressed
+                            });
+                      },
+                      child: Text('Sign in with LDAP'),
+                    ),
+                  ),
+
                   if (authViewModel.loading)
                     Center(
                       child: CircularProgressIndicator(),
@@ -132,11 +134,14 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void handlingGoogleAuthAndMicrosoft(BuildContext context,
-      AuthViewModel authViewModel, Function(String token) onLoginPressed) {
+  void handlingGoogleAuthAndMicrosoft(
+      BuildContext context,
+      AuthViewModel authViewModel,
+      Function(String token) onLoginPressed,
+      String loginTypeee) {
     Map<String, String> queryParams = {
       'tenant': tenant,
-      'mode': loginType,
+      'mode': loginTypeee,
       'device': deviceID,
       'app': appName,
     };
