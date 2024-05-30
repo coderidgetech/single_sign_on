@@ -13,6 +13,7 @@ class Routes {
     switch (settings.name) {
       case RoutesName.normal:
         // final args = settings.arguments as Map<String, dynamic>;
+        print("");
         return MaterialPageRoute(
             builder: (BuildContext context) => NormalScreen());
 
