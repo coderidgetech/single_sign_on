@@ -225,7 +225,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   jsonEncode(data), widget.onLoginPressed);
               if (token != null) {
                 widget.onLoginPressed(token);
-                Navigator.pop(context);
+                // Navigator.pop(context);
               } else {
                 Utils.toastMessage("Error in geting token");
               }
