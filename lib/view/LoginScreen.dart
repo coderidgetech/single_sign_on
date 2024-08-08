@@ -26,11 +26,12 @@ class LoginScreen extends StatelessWidget {
       required this.tenant,
       required this.deviceID,
       required this.appName,
-      required this.loginTypes});
+      required this.loginTypes,
+      required bool havingManagedConfig});
 
   @override
   Widget build(BuildContext context) {
-    saveInCache(baseUrl, tenant, deviceID, appName);
+    // saveInCache(baseUrl, tenant, deviceID, appName);
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                             "Please enter valid username or password", context);
                       } else {
                         hitLoginApi(context, authViewModel, tenant, username,
-                            password, onLoginPressed);
+                            password, onLoginPressed, baseUrl);
                       }
                     },
                     child: Text('Login'),
@@ -87,7 +88,7 @@ class LoginScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         handlingGoogleAuthAndMicrosoft(
-                            context, authViewModel, onLoginPressed, 'google');
+                            context, authViewModel, onLoginPressed, 'google',baseUrl);
                       },
                       child: Text('Sign in with Google'),
                     ),
@@ -98,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         handlingGoogleAuthAndMicrosoft(context, authViewModel,
-                            onLoginPressed, 'microsoft');
+                            onLoginPressed, 'microsoft',baseUrl);
                       },
                       child: Text('Sign in with Microsoft'),
                     ),
@@ -114,13 +115,13 @@ class LoginScreen extends StatelessWidget {
                               'tenant': tenant,
                               'deviceId': deviceID,
                               'appName': appName,
-                              'call_back': onLoginPressed
+                              'call_back': onLoginPressed,
+                              'baseUrl': baseUrl
                             });
                       },
                       child: Text('Sign in with LDAP'),
                     ),
                   ),
-
                   if (authViewModel.loading)
                     Center(
                       child: CircularProgressIndicator(),
@@ -138,28 +139,29 @@ class LoginScreen extends StatelessWidget {
       BuildContext context,
       AuthViewModel authViewModel,
       Function(String token) onLoginPressed,
-      String loginTypeee) {
+      String loginTypeee,String baseUrl) {
     Map<String, String> queryParams = {
       'tenant': tenant,
       'mode': loginTypeee,
       'device': deviceID,
       'app': appName,
     };
-    authViewModel.googlesigin(queryParams, context).then((authUrl) {
+    authViewModel.googlesigin(queryParams, context,baseUrl).then((authUrl) {
       Navigator.pushNamed(context, RoutesName.web_view, arguments: {
         'authUrl': authUrl,
         'call_back': onLoginPressed,
-        'authViewModel': authViewModel
+        'authViewModel': authViewModel,
+        'baseUrl':baseUrl
       });
     });
   }
 
   void saveInCache(
       String baseUrl, String tenant, String deviceID, String appName) async {
-    await SharedPrefs.saveString(Constants.baseUrl, baseUrl);
-    await SharedPrefs.saveString(Constants.tenant, tenant);
-    await SharedPrefs.saveString(Constants.deviceID, deviceID);
-    await SharedPrefs.saveString(Constants.appName, appName);
+    // await SharedPrefs.saveString(Constants.baseUrl, baseUrl);
+    // await SharedPrefs.saveString(Constants.tenant, tenant);
+    // await SharedPrefs.saveString(Constants.deviceID, deviceID);
+    // await SharedPrefs.saveString(Constants.appName, appName);
   }
 }
 
@@ -169,13 +171,15 @@ void hitLoginApi(
     String tenant,
     String username,
     String password,
-    Function(String token) onLoginPressed) {
+    Function(String token) onLoginPressed,
+    String baseUrl) {
   Map data = {"tenant": tenant, "username": username, "password": password};
-  authViewModel.loginApi(jsonEncode(data), context, onLoginPressed);
+  authViewModel.loginApi(jsonEncode(data), context, onLoginPressed,baseUrl);
 }
 
 class WebViewScreen extends StatefulWidget {
   final String authUrl;
+  final String baseUrl;
 
   final Function(String token) onLoginPressed;
 
@@ -183,6 +187,7 @@ class WebViewScreen extends StatefulWidget {
   WebViewScreen({
     required this.authUrl,
     required this.onLoginPressed,
+    required this.baseUrl,
   });
 
   @override
@@ -222,7 +227,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               };
               print("object");
               String token = await authViewModel.validateCode(
-                  jsonEncode(data), widget.onLoginPressed);
+                  jsonEncode(data), widget.onLoginPressed,widget.baseUrl);
               if (token != null) {
                 widget.onLoginPressed(token);
                 // Navigator.pop(context);

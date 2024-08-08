@@ -21,20 +21,22 @@ class Routes {
         final args = settings.arguments as Map<String, dynamic>;
         var username = args['username'];
         var call_back = args['call_back'];
+        var baseUrl = args['baseUrl'];
         return MaterialPageRoute(
           builder: (BuildContext context) =>
-              OTPScreen(username: username, onLoginPressed: call_back),
+              OTPScreen(username: username, onLoginPressed: call_back,baseUrl: baseUrl),
         );
       case RoutesName.web_view:
         final args = settings.arguments as Map<String, dynamic>;
         var call_back = args['call_back'];
         dynamic authUrl = args['authUrl'];
+        dynamic baseUrl = args['baseUrl'];
         AuthViewModel authViewModel = args['authViewModel'];
         print("object");
         return MaterialPageRoute(
             builder: (context) => WebViewScreen(
                   authUrl: authUrl,
-                  onLoginPressed: call_back,
+                  onLoginPressed: call_back, baseUrl: baseUrl,
                 ));
 
       case RoutesName.ldap:
@@ -42,14 +44,17 @@ class Routes {
         var tenant = args['tenant'];
         var deviceId = args['deviceId'];
         var appName = args['appName'];
+        var baseUrl = args['baseUrl'];
         var call_back = args['call_back'];
 
         return MaterialPageRoute(
             builder: (BuildContext context) => LDAPLoginScreen(
-                tenant: tenant,
-                deviceId: deviceId,
-                appName: appName,
-                onLoginPressed: call_back));
+                  tenant: tenant,
+                  deviceId: deviceId,
+                  appName: appName,
+                  onLoginPressed: call_back,
+                  baseUrl: baseUrl,
+                ));
 
       default:
         return MaterialPageRoute(builder: (_) {

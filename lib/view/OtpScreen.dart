@@ -9,8 +9,12 @@ import '../view_model/auth_view_model.dart';
 class OTPScreen extends StatefulWidget {
   final Function(String token) onLoginPressed;
   final String username;
+  final String baseUrl;
 
-  OTPScreen({required this.username, required this.onLoginPressed});
+  OTPScreen(
+      {required this.username,
+      required this.onLoginPressed,
+      required this.baseUrl});
 
   @override
   _OTPScreenState createState() => _OTPScreenState();
@@ -75,7 +79,10 @@ class _OTPScreenState extends State<OTPScreen> {
                       "device": "",
                       "app": "portal"
                     };
-                    authViewModel.validateOtp(jsonEncode(otpData), context).then((token) {
+                    authViewModel
+                        .validateOtp(
+                            jsonEncode(otpData), context, widget.baseUrl)
+                        .then((token) {
                       print("object");
                       if (token != null) {
                         widget.onLoginPressed(token);
@@ -93,7 +100,6 @@ class _OTPScreenState extends State<OTPScreen> {
                 Center(
                   child: CircularProgressIndicator(),
                 )
-
             ],
           ),
         ),

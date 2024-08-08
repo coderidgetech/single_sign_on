@@ -43,7 +43,7 @@ class NetworkApiService implements BaseApiServices {
     try {
       Response response = await post(Uri.parse(url), body: data)
           .timeout(const Duration(seconds: 10));
-    print("object");
+      print("object");
       responseJson = returnResponse(response);
       print("object");
     } on SocketException {
@@ -79,20 +79,50 @@ class NetworkApiService implements BaseApiServices {
   }
 
   @override
-  Future getGetApiResponseWithQuery(String url, data) async{
+  Future getGetApiResponseWithQuery(String url, data) async {
     if (kDebugMode) {
       print(url);
     }
     dynamic responseJson;
     try {
-      final response =
-          await http.get(Uri.parse(url).replace(queryParameters: data)).timeout(const Duration(seconds: 20));
+      final response = await http
+          .get(Uri.parse(url).replace(queryParameters: data))
+          .timeout(const Duration(seconds: 20));
       responseJson = returnResponse(response);
       print("object");
     } on SocketException {
       throw NoInternetException('');
     } on TimeoutException {
       throw FetchDataException('Network Request time out');
+    }
+
+    if (kDebugMode) {
+      print(responseJson);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future getApiWithPathParam(String url, String pathparam) async {
+    if (kDebugMode) {
+      print(url);
+    }
+    dynamic responseJson;
+    try {
+      String pathParam = url + "/$pathparam";
+      print("Patj easedfinodin : " + pathParam);
+      final response = await http
+          .get(Uri.parse(pathParam))
+          .timeout(const Duration(seconds: 20));
+      responseJson = returnResponse(response);
+      print("object");
+    } on SocketException {
+      throw NoInternetException('');
+    } on TimeoutException {
+      throw FetchDataException('Network Request time out');
+    } on Exception {
+      print(" wlkaejsdwaekjdsf : ");
+      throw FetchDataException('');
     }
 
     if (kDebugMode) {

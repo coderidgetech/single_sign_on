@@ -8,13 +8,18 @@ import '../view_model/auth_view_model.dart';
 class LDAPLoginScreen extends StatelessWidget {
   final String tenant;
   final String deviceId;
+  final String baseUrl;
   late final Function(String token) onLoginPressed;
   final String appName;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   LDAPLoginScreen(
-      {required this.tenant, required this.deviceId, required this.appName,required this.onLoginPressed});
+      {required this.tenant,
+      required this.deviceId,
+      required this.appName,
+      required this.onLoginPressed,
+      required this.baseUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +67,7 @@ class LDAPLoginScreen extends StatelessWidget {
                         "Please enter a valid username and password", context);
                   } else {
                     hitLdapLoginApi(context, authViewModel, username, password,
-                        tenant, deviceId, appName,onLoginPressed);
+                        tenant, deviceId, appName, onLoginPressed, baseUrl);
                   }
                 },
                 child: Text('Login'),
@@ -85,7 +90,9 @@ class LDAPLoginScreen extends StatelessWidget {
       String password,
       String tenant,
       String deviceId,
-      String appName,final Function(String token) onLoginPressed ) {
+      String appName,
+      final Function(String token) onLoginPressed,
+      String baseUrl) {
     Map<String, String> data = {
       "username": username,
       "password": password,
@@ -93,6 +100,6 @@ class LDAPLoginScreen extends StatelessWidget {
       "device": "",
       "app": appName,
     };
-    authViewModel.ldapLogin(jsonEncode(data), context,onLoginPressed);
+    authViewModel.ldapLogin(jsonEncode(data), context, onLoginPressed,baseUrl);
   }
 }

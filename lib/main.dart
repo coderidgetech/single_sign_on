@@ -5,13 +5,13 @@ import 'package:single_sign_on/utils/routes/routes.dart';
 import 'package:single_sign_on/utils/routes/routes_name.dart';
 import 'package:single_sign_on/view/LoginScreen.dart';
 import 'package:single_sign_on/view/Normal.dart';
+import 'package:single_sign_on/view/PreLogin.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
 
 void main() {
-  // runApp(const MyApp());
+  runApp(const MyApp());
 }
 
-/*
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         home: Builder(
           builder: (context) {
             final List<String> loginTypes = ['ldap', 'google', 'microsoft'];
-            return LoginScreen(
+            return Prelogin(
               onLoginPressed: (token) {
                 // Handle login token
                 print('======sdd=d=d=======>> Login token: $token');
@@ -41,8 +41,9 @@ class MyApp extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => NormalScreen()),
                 );
               },
-              baseUrl: 'https://portal.emmdev.tectoro.com/idm/v1',
+              baseUrl: 'https://portal.emmdev.tectoro.com',
               // Set your base URL
+                havingManagedConfig: false,
               tenant: 'TT',
               deviceID: '351110795908267f',
               appName: 'device',
@@ -54,4 +55,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-*/

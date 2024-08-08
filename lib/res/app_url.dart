@@ -1,8 +1,11 @@
 class AppUrl {
-  static var baseUrl = 'https://portal.emmdev.tectoro.com/idm/v1';
-  static var loginEndPoint = baseUrl + '/auth/local/login';
-  static var otpEndPoint = baseUrl + '/auth/local/tfa';
-  static var googleSginEndPoint = baseUrl + '/auth/oidc/signin';
-  static var codeToTokenEndPoint = baseUrl + '/auth/oidc/callback';
-  static var ldapEndPoint = baseUrl + '/auth/ldap/login';
+  // static var baseUrl = 'https://portal.emmdev.tectoro.com';
+  // static var loginEndPoint = baseUrl + '/idm/v1/auth/local/login';
+  // static var otpEndPoint = baseUrl + '/idm/v1/auth/local/tfa';
+  // static var googleSginEndPoint = baseUrl + '/idm/v1/auth/oidc/signin';
+  // static var codeToTokenEndPoint = baseUrl + '/idm/v1/auth/oidc/callback';
+  // static var ldapEndPoint = baseUrl + '/idm/v1/auth/ldap/login';
+  // static var registryApiEndPoint ='https://api.mdmdev.tectoro.com/registry/v1/accounts';
+
+
 }
