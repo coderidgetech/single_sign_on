@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/utils/routes/routes.dart';
-import 'package:single_sign_on/utils/routes/routes_name.dart';
-import 'package:single_sign_on/view/LoginScreen.dart';
 import 'package:single_sign_on/view/Normal.dart';
 import 'package:single_sign_on/view/PreLogin.dart';
 import 'package:single_sign_on/view_model/auth_view_model.dart';
@@ -34,12 +32,12 @@ class MyApp extends StatelessWidget {
             return Prelogin(
               onLoginPressed: (token) {
                 // Handle login token
-                print('======sdd=d=d=======>> Login token: $token');
-                Utils.toastMessage("TOKEN : " + token);
-                Navigator.pushReplacement(
+                print('This print is from From the aar fiel ======sdd=d=d=======>> Login token: $token');
+                // Utils.toastMessage("TOKEN : " + token);
+                /*Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => NormalScreen()),
-                );
+                );*/
               },
               baseUrl: 'https://portal.emmdev.tectoro.com',
               // Set your base URL
