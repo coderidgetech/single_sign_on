@@ -122,8 +122,8 @@ class _PreloginState extends State<Prelogin> {
         print("Try again base url is $baseUrl");
         return;
       }
-      baseUrl = 'https://portal.emmdev.tectoro.com';
-      tenant = "TT";
+      // baseUrl = 'https://portal.emmdev.tectoro.com';
+      // tenant = "TT";
       bringAuthModes(appName, tenant, deviceId, baseUrl, authViewModel);
 
       /* authViewModel.callregistryApi(tenant).then((baseUrl) {

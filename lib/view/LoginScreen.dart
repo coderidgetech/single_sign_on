@@ -87,8 +87,8 @@ class LoginScreen extends StatelessWidget {
                     // Show for Google login type
                     child: ElevatedButton(
                       onPressed: () async {
-                        handlingGoogleAuthAndMicrosoft(
-                            context, authViewModel, onLoginPressed, 'google',baseUrl);
+                        handlingGoogleAuthAndMicrosoft(context, authViewModel,
+                            onLoginPressed, 'google', baseUrl);
                       },
                       child: Text('Sign in with Google'),
                     ),
@@ -99,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         handlingGoogleAuthAndMicrosoft(context, authViewModel,
-                            onLoginPressed, 'microsoft',baseUrl);
+                            onLoginPressed, 'microsoft', baseUrl);
                       },
                       child: Text('Sign in with Microsoft'),
                     ),
@@ -139,19 +139,20 @@ class LoginScreen extends StatelessWidget {
       BuildContext context,
       AuthViewModel authViewModel,
       Function(String token) onLoginPressed,
-      String loginTypeee,String baseUrl) {
+      String loginTypeee,
+      String baseUrl) {
     Map<String, String> queryParams = {
       'tenant': tenant,
       'mode': loginTypeee,
       'device': deviceID,
       'app': appName,
     };
-    authViewModel.googlesigin(queryParams, context,baseUrl).then((authUrl) {
+    authViewModel.googlesigin(queryParams, context, baseUrl).then((authUrl) {
       Navigator.pushNamed(context, RoutesName.web_view, arguments: {
         'authUrl': authUrl,
         'call_back': onLoginPressed,
         'authViewModel': authViewModel,
-        'baseUrl':baseUrl
+        'baseUrl': baseUrl
       });
     });
   }
@@ -174,7 +175,7 @@ void hitLoginApi(
     Function(String token) onLoginPressed,
     String baseUrl) {
   Map data = {"tenant": tenant, "username": username, "password": password};
-  authViewModel.loginApi(jsonEncode(data), context, onLoginPressed,baseUrl);
+  authViewModel.loginApi(jsonEncode(data), context, onLoginPressed, baseUrl);
 }
 
 class WebViewScreen extends StatefulWidget {
@@ -200,7 +201,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Authentication'),
@@ -214,7 +214,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
         },
         navigationDelegate: (NavigationRequest request) async {
           // Handle URL navigation
-          if (request.url.startsWith('https://portal.emmdev.tectoro')) {
+          String baseUrl = widget.baseUrl;
+          print("=========>>>> Base url in web view is : " + baseUrl);
+          if (request.url.startsWith(baseUrl)) {
             final Uri uri = Uri.parse(request.url);
             final String? code = uri.queryParameters['code'];
             final String? state = uri.queryParameters['state'];
@@ -227,7 +229,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               };
               print("object");
               String token = await authViewModel.validateCode(
-                  jsonEncode(data), widget.onLoginPressed,widget.baseUrl);
+                  jsonEncode(data), widget.onLoginPressed, widget.baseUrl);
               if (token != null) {
                 widget.onLoginPressed(token);
                 // Navigator.pop(context);
