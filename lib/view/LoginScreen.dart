@@ -22,12 +22,12 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen(
       {required this.onLoginPressed,
-      required this.baseUrl,
-      required this.tenant,
-      required this.deviceID,
-      required this.appName,
-      required this.loginTypes,
-      required bool havingManagedConfig});
+        required this.baseUrl,
+        required this.tenant,
+        required this.deviceID,
+        required this.appName,
+        required this.loginTypes,
+        required bool havingManagedConfig});
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +67,10 @@ class LoginScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      String username = usernameController.text;
-                      String password = passwordController.text;
+                      // String username = usernameController.text;
+                      String username = "emmteam";
+                      // String password = passwordController.text;
+                      String password = "Welcome@1";
                       if (username.isEmpty ||
                           password.isEmpty ||
                           password.length < 2) {
