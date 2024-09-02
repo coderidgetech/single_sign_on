@@ -152,6 +152,17 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   late WebViewController _webViewController;
 
+  void _handleNavigation(String url) {
+    final Uri uri = Uri.parse(url);
+    final String? token = uri.queryParameters['code'];
+    if (token != null) {
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+      widget.onLoginPressed(token);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,15 +178,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
         navigationDelegate: (NavigationRequest request) async {
           // Handle URL navigation
           if (request.url.startsWith('https://portal.emmdev.tectoro')) {
-            final Uri uri = Uri.parse(request.url);
-            final String? token = uri.queryParameters['code'];
-            if (token != null) {
-              // Close the WebView
-              Navigator.pop(context);
+            _handleNavigation(request.url);
+            return NavigationDecision.prevent;
 
-              // Call the onLoginPressed function with the token
-              widget.onLoginPressed(token);
-            }
           }
           return NavigationDecision.navigate;
         },
