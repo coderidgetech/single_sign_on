@@ -17,6 +17,8 @@ dependencies:
   fluttertoast: ^8.2.5
   another_flushbar: ^1.12.30
   shared_preferences: ^2.0.15
+  flutter_svg: ^2.0.9
+  pin_code_fields: ^8.0.1
 
 
 

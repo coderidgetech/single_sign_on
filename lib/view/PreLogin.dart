@@ -52,7 +52,7 @@ class _PreloginState extends State<Prelogin> {
   }
 
   void _navigateToLogin() {
-    Navigator.pushReplacement(
+    Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => LoginScreen(
