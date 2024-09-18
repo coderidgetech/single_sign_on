@@ -83,6 +83,7 @@ class _PreloginState extends State<Prelogin> {
   void _showTenantDialog(AuthViewModel authViewModel) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
           title: Text('Enter Tenant'),
