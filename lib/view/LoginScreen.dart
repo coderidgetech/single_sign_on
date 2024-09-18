@@ -13,7 +13,7 @@ class LoginScreen extends StatefulWidget {
   final String tenant;
   final String deviceID;
   final String appName;
-  final List<String> loginTypes;
+  final String loginTypes;
   final bool havingManagedConfig;
   LoginScreen({
     required this.onLoginPressed,
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         child: Column(
                           children: [
-                            SvgPicture.asset('assets/tectoro.svg'),
+                            SvgPicture.asset('lib/assets/tectoro.svg'),
                             SizedBox(height: 10),
                             Text(
                               'Login',
@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             );
                                           },
                                           icon: SvgPicture.asset(
-                                            'assets/google.svg', // Path to your Google SVG icon
+                                            'lib/assets/google.svg', // Path to your Google SVG icon
                                             width: 32.0,
                                             height: 32.0,
                                           ),
@@ -222,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             );
                                           },
                                           icon: SvgPicture.asset(
-                                            'assets/microsoft.svg', // Path to your Microsoft SVG icon
+                                            'lib/assets/microsoft.svg', // Path to your Microsoft SVG icon
                                             width: 32.0,
                                             height: 32.0,
                                           ),
@@ -252,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             });
                                           },
                                           icon: Image.asset(
-                                            'assets/ldap1.png', // Path to your LDAP icon
+                                            'lib/assets/ldap1.png', // Path to your LDAP icon
                                             width: 32.0,
                                             fit: BoxFit.fill,
                                           ),

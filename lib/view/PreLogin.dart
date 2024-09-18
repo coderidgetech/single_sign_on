@@ -12,7 +12,7 @@ class Prelogin extends StatefulWidget {
   final String tenant;
   final String deviceID;
   final String appName;
-  final List<String> loginTypes;
+  final String loginTypes;
   final bool havingManagedConfig;
 
   final Function(String) onLoginPressed;
@@ -45,24 +45,38 @@ class _PreloginState extends State<Prelogin> {
 
   void _handleConfig(AuthViewModel authViewModel) {
     if (widget.havingManagedConfig) {
-      _navigateToLogin();
+      _navigateToLogin(widget.tenant, widget.baseUrl, widget.appName,
+          widget.deviceID, widget.loginTypes);
     } else {
       _showTenantDialog(authViewModel);
     }
   }
 
-  void _navigateToLogin() {
+  void _navigateToLogin(
+    String tenant,
+    String baseUrl,
+    String appName,
+    String deviceId,
+    String loginTypes,
+  ) {
+    print("====laskdfjn >>> tenant : $tenant");
+    print("====laskdfjn >>> baseurl : $baseUrl");
+    print("====laskdfjn >>> appNAme : $appName");
+    print("====laskdfjn >>> deviceId : $deviceId");
+    print("====laskdfjn >>> loginTypes : $loginTypes");
+    print(
+        "====laskdfjn >>> havingManaged cOnfig : ${widget.havingManagedConfig}");
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => LoginScreen(
                 onLoginPressed: widget.onLoginPressed,
-                baseUrl: widget.baseUrl,
-                deviceID: widget.deviceID,
-                appName: widget.appName,
-                loginTypes: widget.loginTypes,
+                baseUrl: baseUrl,
+                deviceID: deviceId,
+                appName: appName,
+                loginTypes: loginTypes,
                 havingManagedConfig: widget.havingManagedConfig,
-                tenant: widget.tenant)));
+                tenant: tenant)));
     // widget.onLoginPressed(widget.tenant);
   }
 
@@ -124,7 +138,13 @@ class _PreloginState extends State<Prelogin> {
       }
       // baseUrl = 'https://portal.emmdev.tectoro.com';
       // tenant = "TT";
-      bringAuthModes(appName, tenant, deviceId, baseUrl, authViewModel);
+      bringAuthModes(
+        appName,
+        tenant,
+        deviceId,
+        baseUrl,
+        authViewModel,
+      );
 
       /* authViewModel.callregistryApi(tenant).then((baseUrl) {
         print("object");
@@ -137,12 +157,14 @@ class _PreloginState extends State<Prelogin> {
 
   void bringAuthModes(String appName, String tenant, String deviceId,
       String baseUrl, AuthViewModel authViewModel) async {
-    String authmodes = await authViewModel.fetchAuthModes(tenant, baseUrl);
-    if (authmodes == null || authmodes.isEmpty) {
-      Utils.snackBar("Error in getting Authmodes are $authmodes", context);
+    String loginTypes = await authViewModel.fetchAuthModes(tenant, baseUrl);
+    print("object");
+
+    if (loginTypes == null || loginTypes.isEmpty) {
+      Utils.snackBar("Error in getting Authmodes are $loginTypes", context);
       return;
     }
-    print("=======>> Authmoides are  $authmodes");
-    _navigateToLogin();
+    print("=======>> Authmoides are  $loginTypes");
+    _navigateToLogin(tenant, baseUrl, appName, deviceId, loginTypes);
   }
 }
