@@ -22,9 +22,18 @@ class Routes {
         var username = args['username'];
         var call_back = args['call_back'];
         var baseUrl = args['baseUrl'];
+        var deviceId = args['deviceId'];
+        var tenant = args['tenant'];
+        var appName = args['appName'];
         return MaterialPageRoute(
-          builder: (BuildContext context) =>
-              OTPScreen(username: username, onLoginPressed: call_back,baseUrl: baseUrl),
+          builder: (BuildContext context) => OTPScreen(
+            username: username,
+            onLoginPressed: call_back,
+            baseUrl: baseUrl,
+            deviceId: deviceId,
+            tenant: tenant,
+            appName: appName,
+          ),
         );
       case RoutesName.web_view:
         final args = settings.arguments as Map<String, dynamic>;
@@ -36,7 +45,8 @@ class Routes {
         return MaterialPageRoute(
             builder: (context) => WebViewScreen(
                   authUrl: authUrl,
-                  onLoginPressed: call_back, baseUrl: baseUrl,
+                  onLoginPressed: call_back,
+                  baseUrl: baseUrl,
                 ));
 
       case RoutesName.ldap:

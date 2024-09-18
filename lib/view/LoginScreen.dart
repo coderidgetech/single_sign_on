@@ -154,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         password,
                                         widget.onLoginPressed,
                                         widget.baseUrl,
+                                        widget.deviceID,widget.appName
                                       );
                                     }
                                   },
@@ -314,9 +315,9 @@ class _LoginScreenState extends State<LoginScreen> {
       String username,
       String password,
       Function(String token) onLoginPressed,
-      String baseUrl) {
+      String baseUrl,String deviceId,String appName) {
     Map data = {"tenant": tenant, "username": username, "password": password};
-    authViewModel.loginApi(jsonEncode(data), context, onLoginPressed, baseUrl);
+    authViewModel.loginApi(jsonEncode(data), context, onLoginPressed, baseUrl,tenant,deviceId,appName);
   }
   void saveInCache(
       String baseUrl, String tenant, String deviceID, String appName) async {

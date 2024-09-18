@@ -40,8 +40,13 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> loginApi(dynamic data, BuildContext context,
-      Function(String token) onLoginPressed, String baseUrl) async {
+  Future<void> loginApi(
+      dynamic data,
+      BuildContext context,
+      Function(String token) onLoginPressed,
+      String baseUrl,
+      String tenant,
+      String deviceId,String appName) async {
     setLoading(true);
     _myRepo.loginApi(data, baseUrl).then((value) {
       setLoading(false);
@@ -53,7 +58,10 @@ class AuthViewModel with ChangeNotifier {
         arguments: {
           'username': usernamr,
           'call_back': onLoginPressed,
-          'baseUrl': baseUrl
+          'baseUrl': baseUrl,
+          'tenant': tenant,
+          'deviceId': deviceId,
+          'appName': appName,
         },
       );
 

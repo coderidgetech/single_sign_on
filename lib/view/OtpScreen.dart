@@ -4,22 +4,33 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import '../view_model/auth_view_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 class OTPScreen extends StatefulWidget {
   final Function(String token) onLoginPressed;
   final String username;
   final String baseUrl;
+  final String deviceId;
+  final String tenant;
+  final String appName;
+
   OTPScreen({
     required this.username,
     required this.onLoginPressed,
     required this.baseUrl,
+    required this.deviceId,
+    required this.tenant,
+    required this.appName,
   });
+
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
+
 class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String currentOtp = "";
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -47,9 +58,14 @@ class _OTPScreenState extends State<OTPScreen> {
                         SizedBox(height: 10),
                         Text(
                           'Login',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26,color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26,
+                              color: Colors.white),
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
@@ -58,10 +74,13 @@ class _OTPScreenState extends State<OTPScreen> {
                     height: MediaQuery.of(context).size.height * 0.35,
                     child: Card(
                       color: Colors.white,
-                      child: Padding(padding: EdgeInsets.all(18.0),
+                      child: Padding(
+                        padding: EdgeInsets.all(18.0),
                         child: Column(
                           children: [
-                            SizedBox(height: 20,),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Text(
                               'Please enter the OTP sent to your Mail',
                               style: TextStyle(fontSize: 16.0),
@@ -72,7 +91,8 @@ class _OTPScreenState extends State<OTPScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               controller: otpController,
                               appContext: context,
-                              length: 6, // Assuming OTP is 6 digits long
+                              length: 6,
+                              // Assuming OTP is 6 digits long
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 setState(() {
@@ -80,7 +100,9 @@ class _OTPScreenState extends State<OTPScreen> {
                                 });
                               },
                               validator: (value) {
-                                if (value == null || value.isEmpty || value.length != 6) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.length != 6) {
                                   return 'Please enter a valid 6-digit OTP';
                                 }
                                 return null;
@@ -101,14 +123,15 @@ class _OTPScreenState extends State<OTPScreen> {
                                 if (_formKey.currentState!.validate()) {
 // Trigger OTP submission
                                   Map otpData = {
-                                    "tenant": "TT",
+                                    "tenant": widget.tenant,
                                     "username": widget.username,
                                     "otp": otpController.text,
-                                    "device": "",
-                                    "app": "portal",
+                                    "device": widget.deviceId,
+                                    "app": widget.appName,
                                   };
                                   try {
-                                    final token = await authViewModel.validateOtp(
+                                    final token =
+                                        await authViewModel.validateOtp(
                                       jsonEncode(otpData),
                                       context,
                                       widget.baseUrl,
@@ -116,34 +139,47 @@ class _OTPScreenState extends State<OTPScreen> {
                                     if (token != null && token.isNotEmpty) {
                                       widget.onLoginPressed(token);
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(content: Text('Invalid OTP')),
                                       );
                                     }
                                   } catch (e) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Error validating OTP')),
+                                      SnackBar(
+                                          content:
+                                              Text('Error validating OTP')),
                                     );
                                   }
                                 }
                               },
                               child: Text('Submit OTP'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff00BFC0), // Background color
-                                foregroundColor: Colors.white, // Text color
-                                elevation: 2, // Elevation of the button
-                                minimumSize: Size(double.maxFinite, 50), // Width and height of the button
-                                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding inside the button
+                                backgroundColor: Color(0xff00BFC0),
+                                // Background color
+                                foregroundColor: Colors.white,
+                                // Text color
+                                elevation: 2,
+                                // Elevation of the button
+                                minimumSize: Size(double.maxFinite, 50),
+                                // Width and height of the button
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 15),
+                                // Padding inside the button
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5), // Rounded corners
+                                  borderRadius: BorderRadius.circular(
+                                      5), // Rounded corners
                                 ),
                               ),
                             ),
                           ],
-                        ),),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                   if (authViewModel.loading)
                     Center(
                       child: CircularProgressIndicator(),
