@@ -28,7 +28,7 @@ class LDAPLoginScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/backg.png'),
+            image: AssetImage('lib/assets/backg.png'),
             fit: BoxFit.fill, // Adjust as needed
           ),
         ),
