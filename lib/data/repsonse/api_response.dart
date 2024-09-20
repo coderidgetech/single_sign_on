@@ -1,6 +1,7 @@
 
 
-import 'package:untitled/data/repsonse/status.dart';
+
+import 'package:single_sign_on/data/repsonse/status.dart';
 
 class ApiResponse<T> {
 

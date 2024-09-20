@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:untitled/utils/routes/routes_name.dart';
+import 'package:single_sign_on/utils/routes/routes_name.dart';
 
 import '../../view/LoginScreen.dart';
 import '../../view/Normal.dart';

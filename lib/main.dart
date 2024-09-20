@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/utils/routes/routes.dart';
-import 'package:untitled/view/Normal.dart';
-import 'package:untitled/view/PreLogin.dart';
-import 'package:untitled/view_model/auth_view_model.dart';
+import 'package:single_sign_on/utils/routes/routes.dart';
+import 'package:single_sign_on/view/Normal.dart';
+import 'package:single_sign_on/view/PreLogin.dart';
+import 'package:single_sign_on/view_model/auth_view_model.dart';
 
 void main() {
   runApp(const MyApp());
