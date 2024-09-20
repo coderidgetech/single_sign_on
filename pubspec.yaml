@@ -1,8 +1,7 @@
-name: untitled_example
-description: "Demonstrates how to use the untitled plugin."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+name: single_sign_on
+description: sso_signin is a package where user can add athentication using Google, Microsoft and LDAP.
+version: 0.0.2
+publish_to: 'https://github.com/coderidgetech/sso_signin.git'
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
