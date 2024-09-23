@@ -1,4 +1,4 @@
-name: single_sign_on
+name: login_module
 description: sso_signin is a package where user can add athentication using Google, Microsoft and LDAP.
 version: 0.0.3
 publish_to: 'https://github.com/coderidgetech/sso_signin.git'
