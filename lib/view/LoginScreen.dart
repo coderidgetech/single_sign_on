@@ -7,14 +7,16 @@ import 'package:single_sign_on/view_model/auth_view_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../utils/routes/routes_name.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 class LoginScreen extends StatefulWidget {
-  final Function(String token) onLoginPressed;
+  final Function(Map token) onLoginPressed;
   final String baseUrl;
   final String tenant;
   final String deviceID;
   final String appName;
   final String loginTypes;
   final bool havingManagedConfig;
+
   LoginScreen({
     required this.onLoginPressed,
     required this.baseUrl,
@@ -24,25 +26,30 @@ class LoginScreen extends StatefulWidget {
     required this.loginTypes,
     required this.havingManagedConfig,
   });
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
+
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController usernameController;
   late TextEditingController passwordController;
   bool _obscureText = true;
+
   @override
   void initState() {
     super.initState();
     usernameController = TextEditingController();
     passwordController = TextEditingController();
   }
+
   @override
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -70,9 +77,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 10),
                             Text(
                               'Login',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26,color: Colors.white),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 26,
+                                  color: Colors.white),
                             ),
-                            SizedBox(height: 20,),
+                            SizedBox(
+                              height: 20,
+                            ),
                           ],
                         ),
                       ),
@@ -94,14 +106,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                     labelText: 'Username',
                                     labelStyle: TextStyle(color: Colors.black),
                                     hintText: 'Enter Username',
-                                    hintStyle: TextStyle(color: Color(0xffCECECF)),
+                                    hintStyle:
+                                        TextStyle(color: Color(0xffCECECF)),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xffCECECF), width: 1.0), // Grey border
+                                      borderSide: BorderSide(
+                                          color: Color(0xffCECECF),
+                                          width: 1.0), // Grey border
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xffCECECF), width: 1.0), // Grey border on focus
+                                      borderSide: BorderSide(
+                                          color: Color(0xffCECECF),
+                                          width: 1.0), // Grey border on focus
                                     ),
                                   ),
                                 ),
@@ -114,18 +131,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fillColor: Colors.white,
                                     labelText: 'Password',
                                     hintText: 'Enter Password',
-                                    hintStyle: TextStyle(color: Color(0xffCECECF)),
+                                    hintStyle:
+                                        TextStyle(color: Color(0xffCECECF)),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xffCECECF), width: 1.0), // Grey border
+                                      borderSide: BorderSide(
+                                          color: Color(0xffCECECF),
+                                          width: 1.0), // Grey border
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xffCECECF), width: 1.0), // Grey border on focus
+                                      borderSide: BorderSide(
+                                          color: Color(0xffCECECF),
+                                          width: 1.0), // Grey border on focus
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                                        _obscureText
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
                                       ),
                                       onPressed: () {
                                         setState(() {
@@ -135,53 +159,69 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 20,),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    String username = usernameController.text.trim();
-                                    String password = passwordController.text;
-                                    if (username.isEmpty || password.isEmpty || password.length < 2) {
+                                    // String username =usernameController.text.trim();
+                                    String username = 'emmteam';
+                                    // String password = passwordController.text;
+                                    String password = 'Welcome@1';
+                                    if (username.isEmpty ||
+                                        password.isEmpty ||
+                                        password.length < 2) {
                                       Utils.flushBarErrorMessage(
                                         "Please enter a valid username or password",
                                         context,
                                       );
                                     } else {
                                       hitLoginApi(
-                                        context,
-                                        authViewModel,
-                                        widget.tenant,
-                                        username,
-                                        password,
-                                        widget.onLoginPressed,
-                                        widget.baseUrl,
-                                        widget.deviceID,widget.appName
-                                      );
+                                          context,
+                                          authViewModel,
+                                          widget.tenant,
+                                          username,
+                                          password,
+                                          widget.onLoginPressed,
+                                          widget.baseUrl,
+                                          widget.deviceID,
+                                          widget.appName);
                                     }
                                   },
                                   child: Text('Login'),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xff00BFC0), // Background color
-                                    foregroundColor: Colors.white, // Text color
-                                    elevation: 2, // Elevation of the button
-                                    minimumSize: Size(double.maxFinite, 50), // Width and height of the button
-                                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Padding inside the button
+                                    backgroundColor: Color(0xff00BFC0),
+                                    // Background color
+                                    foregroundColor: Colors.white,
+                                    // Text color
+                                    elevation: 2,
+                                    // Elevation of the button
+                                    minimumSize: Size(double.maxFinite, 50),
+                                    // Width and height of the button
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 30, vertical: 15),
+                                    // Padding inside the button
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Rounded corners
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 30.0),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Visibility(
-                                      visible: widget.loginTypes.contains('google'),
+                                      visible:
+                                          widget.loginTypes.contains('google'),
                                       child: Card(
                                         color: Colors.white,
                                         margin: EdgeInsets.all(8.0),
                                         elevation: 4,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         child: IconButton(
                                           onPressed: () async {
@@ -194,7 +234,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             );
                                           },
                                           icon: SvgPicture.asset(
-                                            'lib/assets/google.svg', // Path to your Google SVG icon
+                                            'lib/assets/google.svg',
+                                            // Path to your Google SVG icon
                                             width: 32.0,
                                             height: 32.0,
                                           ),
@@ -204,13 +245,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     SizedBox(width: 16.0),
                                     Visibility(
-                                      visible: widget.loginTypes.contains('microsoft'),
-                                      child:Card(
+                                      visible: widget.loginTypes
+                                          .contains('microsoft'),
+                                      child: Card(
                                         color: Colors.white,
                                         margin: EdgeInsets.all(8.0),
                                         elevation: 4,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         child: IconButton(
                                           onPressed: () {
@@ -223,7 +266,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             );
                                           },
                                           icon: SvgPicture.asset(
-                                            'lib/assets/microsoft.svg', // Path to your Microsoft SVG icon
+                                            'lib/assets/microsoft.svg',
+                                            // Path to your Microsoft SVG icon
                                             width: 32.0,
                                             height: 32.0,
                                           ),
@@ -233,27 +277,32 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     SizedBox(width: 16.0),
                                     Visibility(
-                                      visible: widget.loginTypes.contains('ldap'),
+                                      visible:
+                                          widget.loginTypes.contains('ldap'),
                                       child: Card(
                                         color: Colors.white,
                                         margin: EdgeInsets.all(8.0),
                                         elevation: 4,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         child: IconButton(
                                           onPressed: () {
                                             Navigator.pushNamed(
-                                                context, RoutesName.ldap, arguments: {
-                                              'tenant': widget.tenant,
-                                              'deviceId': widget.deviceID,
-                                              'appName': widget.appName,
-                                              'call_back': widget.onLoginPressed,
-                                              'baseUrl': widget.baseUrl,
-                                            });
+                                                context, RoutesName.ldap,
+                                                arguments: {
+                                                  'tenant': widget.tenant,
+                                                  'deviceId': widget.deviceID,
+                                                  'appName': widget.appName,
+                                                  'call_back':
+                                                      widget.onLoginPressed,
+                                                  'baseUrl': widget.baseUrl,
+                                                });
                                           },
                                           icon: Image.asset(
-                                            'lib/assets/ldap1.png', // Path to your LDAP icon
+                                            'lib/assets/ldap1.png',
+                                            // Path to your LDAP icon
                                             width: 32.0,
                                             fit: BoxFit.fill,
                                           ),
@@ -264,29 +313,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                               ],
-                            ),),
-                        ),),
-                      SizedBox(height: 40,),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
                       if (authViewModel.loading)
                         Center(
                           child: Container(
                             width: 50,
-                            child: LinearProgressIndicator(color: Colors.teal,),
+                            child: LinearProgressIndicator(
+                              color: Colors.teal,
+                            ),
                           ),
                         )
                     ],
                   ),
                 ),
-              )
-          );
+              ));
         },
       ),
     );
   }
+
   void handlingGoogleAuthAndMicrosoft(
       BuildContext context,
       AuthViewModel authViewModel,
-      Function(String token) onLoginPressed,
+      Function(Map token) onLoginPressed,
       String loginTypeee,
       String baseUrl) {
     Map<String, String> queryParams = {
@@ -296,29 +351,37 @@ class _LoginScreenState extends State<LoginScreen> {
       'app': widget.appName,
     };
     authViewModel.googlesigin(queryParams, context, baseUrl).then((authUrl) {
+      print("wlaskdfjvbhkjdsf $authUrl");
       Navigator.pushNamed(context, RoutesName.web_view, arguments: {
         'authUrl': authUrl,
         'call_back': onLoginPressed,
         'authViewModel': authViewModel,
         'baseUrl': baseUrl
       }).then((token) {
-        if (token != null) {
-          widget.onLoginPressed(token as String);
-        }
+        print("object");
+        print("object");
+        // if (token) {
+        //   widget.onLoginPressed(token);
+        // }
       });
     });
   }
+
   void hitLoginApi(
       BuildContext context,
       AuthViewModel authViewModel,
       String tenant,
       String username,
       String password,
-      Function(String token) onLoginPressed,
-      String baseUrl,String deviceId,String appName) {
+      Function(Map token) onLoginPressed,
+      String baseUrl,
+      String deviceId,
+      String appName) {
     Map data = {"tenant": tenant, "username": username, "password": password};
-    authViewModel.loginApi(jsonEncode(data), context, onLoginPressed, baseUrl,tenant,deviceId,appName);
+    authViewModel.loginApi(jsonEncode(data), context, onLoginPressed, baseUrl,
+        tenant, deviceId, appName);
   }
+
   void saveInCache(
       String baseUrl, String tenant, String deviceID, String appName) async {
 // await SharedPrefs.saveString(Constants.baseUrl, baseUrl);
@@ -332,18 +395,22 @@ class WebViewScreen extends StatefulWidget {
   final String authUrl;
   final String baseUrl;
 
-  final Function(String token) onLoginPressed;
+  final Function(Map token) onLoginPressed;
+
 // WebViewScreen({required this.authUrl, required this.onLoginPressed});
   WebViewScreen({
     required this.authUrl,
     required this.onLoginPressed,
     required this.baseUrl,
   });
+
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
 }
+
 class _WebViewScreenState extends State<WebViewScreen> {
   late WebViewController _webViewController;
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -375,9 +442,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 'state': state,
               };
               print("object");
-              String token = await authViewModel.validateCode(
+              Map? token = await authViewModel.validateCode(
                   jsonEncode(data), widget.onLoginPressed, widget.baseUrl);
               if (token != null) {
+                print("object");
+
                 widget.onLoginPressed(token);
 // Navigator.pop(context);
               } else {

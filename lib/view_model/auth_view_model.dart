@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:single_sign_on/model/LoginPayload.dart';
+import 'package:single_sign_on/model/TokenResponse.dart';
 import 'package:single_sign_on/repository/auth_repository.dart';
 import 'package:single_sign_on/utils/apputil.dart';
 import 'package:single_sign_on/utils/routes/routes_name.dart';
@@ -43,10 +44,11 @@ class AuthViewModel with ChangeNotifier {
   Future<void> loginApi(
       dynamic data,
       BuildContext context,
-      Function(String token) onLoginPressed,
+      Function(Map token) onLoginPressed,
       String baseUrl,
       String tenant,
-      String deviceId,String appName) async {
+      String deviceId,
+      String appName) async {
     setLoading(true);
     _myRepo.loginApi(data, baseUrl).then((value) {
       setLoading(false);
@@ -74,14 +76,15 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> ldapLogin(dynamic data, BuildContext context,
-      Function(String token) onLoginPressed, String baseUrl) async {
+      Function(Map token) onLoginPressed, String baseUrl) async {
     setLoading(true);
     _myRepo.ldapApi(data, baseUrl).then((value) {
       setLoading(false);
-      Map<String, dynamic> mapData = jsonDecode(data);
       print("object");
       var token = value['data']['token'];
-      onLoginPressed(token);
+      var refreshToken = value['data']['refreshToken'];
+      Map result = TokenResponse(token: token, refreshToken: refreshToken).sucess();
+      onLoginPressed(result);
       print("====================>>>>>  " + value.toString());
     }).onError((error, stackTrace) {
       setLoading(false);
@@ -90,16 +93,17 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
-  Future<String?> validateOtp(
+  Future<Map?> validateOtp(
       dynamic data, BuildContext context, String baseUrl) async {
     try {
       setLoading(true);
       var value = await _myRepo.otpValidation(data, baseUrl);
       var token = value['data']['token'];
-      print("====================>>>>>  ");
+      var refreshToken = value['data']['refreshToken'];
       if (token != null) {
+        print("====================>>>>>  ");
         setLoading(false);
-        return token;
+        return TokenResponse(token: token, refreshToken: refreshToken).sucess();
       } else {
         setLoading(false);
         Utils.flushBarErrorMessage("Error in getting otp.", context);
@@ -107,7 +111,7 @@ class AuthViewModel with ChangeNotifier {
     } catch (e) {
       setLoading(false);
       Utils.flushBarErrorMessage(e.toString(), context);
-      return "";
+      return TokenResponse.failed(e.toString());
     }
   }
 
@@ -127,18 +131,19 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
-  Future<String> validateCode(dynamic data,
-      Function(String token) onLoginPressed, String baseUrl) async {
+  Future<Map> validateCode(
+      dynamic data, Function(Map token) onLoginPressed, String baseUrl) async {
     setLoading(true);
     var value = await _myRepo.validateCode(data, baseUrl);
     String token = value['data']['token'];
+    var refreshToken = value['data']['refreshToken'];
     if (token != null) {
       setLoading(false);
-      return token;
+      return TokenResponse(token: token, refreshToken: refreshToken).sucess();
     } else {
       setLoading(false);
       Utils.toastMessage("Error in geting token");
-      return "";
+      return TokenResponse.failed('Error in geting token');
     }
     print("object");
   }

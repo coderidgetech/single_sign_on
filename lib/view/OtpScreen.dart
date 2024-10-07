@@ -6,7 +6,7 @@ import '../view_model/auth_view_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OTPScreen extends StatefulWidget {
-  final Function(String token) onLoginPressed;
+  final Function(Map token) onLoginPressed;
   final String username;
   final String baseUrl;
   final String deviceId;
@@ -136,7 +136,8 @@ class _OTPScreenState extends State<OTPScreen> {
                                       context,
                                       widget.baseUrl,
                                     );
-                                    if (token != null && token.isNotEmpty) {
+                                    print("object");
+                                    if (token!.length > 0) {
                                       widget.onLoginPressed(token);
                                     } else {
                                       ScaffoldMessenger.of(context)

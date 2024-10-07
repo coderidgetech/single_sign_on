@@ -15,7 +15,7 @@ class Prelogin extends StatefulWidget {
   final String loginTypes;
   final bool havingManagedConfig;
 
-  final Function(String) onLoginPressed;
+  final Function(Map) onLoginPressed;
 
   Prelogin({
     required this.onLoginPressed,
@@ -97,6 +97,7 @@ class _PreloginState extends State<Prelogin> {
                 // Navigator.of(context).pop();
                 // widget.onLoginPressed(_tenantController.text);
                 String tenant = _tenantController.text.toString();
+                // String tenant = '100001';
                 String appName = widget.appName;
                 String deviceID = widget.deviceID;
                 if (tenant == null || tenant.isEmpty) {
@@ -116,14 +117,7 @@ class _PreloginState extends State<Prelogin> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Prelogin'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-      ),
-    );
+    return Scaffold();
   }
 
   void hanldingRegistryApi(String appName, String tenant, String deviceId,

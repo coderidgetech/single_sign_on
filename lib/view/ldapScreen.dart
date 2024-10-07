@@ -8,7 +8,7 @@ class LDAPLoginScreen extends StatelessWidget {
   final String tenant;
   final String deviceId;
   final String baseUrl;
-  late final Function(String token) onLoginPressed;
+  late final Function(Map token) onLoginPressed;
   final String appName;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -131,7 +131,7 @@ class LDAPLoginScreen extends StatelessWidget {
       String tenant,
       String deviceId,
       String appName,
-      final Function(String token) onLoginPressed,
+      final Function(Map token) onLoginPressed,
       String baseUrl) {
     Map<String, String> data = {
       "username": username,
