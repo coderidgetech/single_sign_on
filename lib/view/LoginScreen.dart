@@ -164,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    // String username =usernameController.text.trim();
-                                    String username = 'emmteam';
-                                    // String password = passwordController.text;
-                                    String password = 'Welcome@1';
+                                    String username =usernameController.text.trim();
+                                    // String username = 'emmteam';
+                                    String password = passwordController.text;
+                                    // String password = 'Welcome@1';
                                     if (username.isEmpty ||
                                         password.isEmpty ||
                                         password.length < 2) {

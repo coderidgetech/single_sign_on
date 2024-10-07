@@ -1,6 +1,6 @@
+
 import 'package:single_sign_on/data/network/base_api_services.dart';
 import 'package:single_sign_on/data/network/network_api_services.dart';
-import 'package:single_sign_on/res/app_url.dart';
 
 class AuthRepository {
   BaseApiServices _apiServices = NetworkApiService();
